@@ -1,0 +1,101 @@
+kind: pipeline
+type: docker
+name: immich-photos-deploy
+
+steps:
+  - name: create-network
+    image: docker:24-cli
+    commands:
+      - docker network create immich || true
+    when:
+      branch:
+        - main
+      event:
+        - push
+
+  - name: deploy
+    image: docker:24-cli
+    commands:
+      - apk add --no-cache docker-compose
+      - docker-compose down || true
+      - docker-compose pull
+      - docker-compose up -d
+    environment:
+      # Environment variables from Drone secrets
+      UPLOAD_LOCATION:
+        from_secret: immich_upload_location
+      DB_DATA_LOCATION:
+        from_secret: immich_db_data_location
+      DB_PASSWORD:
+        from_secret: immich_db_password
+      DB_USERNAME:
+        from_secret: immich_db_username
+      DB_DATABASE_NAME:
+        from_secret: immich_db_database_name
+      TZ:
+        from_secret: immich_tz
+      MACHINE_LEARNING_WORKERS:
+        from_secret: immich_ml_workers
+      MACHINE_LEARNING_WORKER_TIMEOUT:
+        from_secret: immich_ml_worker_timeout
+      IMMICH_VERSION:
+        from_secret: immich_version
+    depends_on:
+      - create-network
+    when:
+      branch:
+        - main
+      event:
+        - push
+
+  - name: health-check
+    image: docker:24-cli
+    commands:
+      - sleep 30
+      - docker-compose ps
+      - docker-compose logs --tail=50 immich-server
+    depends_on:
+      - deploy
+    when:
+      branch:
+        - main
+      event:
+        - push
+
+---
+kind: pipeline
+type: docker
+name: notify
+
+steps:
+  - name: notify-success
+    image: plugins/webhook
+    settings:
+      urls:
+        from_secret: webhook_url
+      content_type: application/json
+      template: |
+        {
+          "content": "✅ Immich Photos deployed successfully to https://photos.bobparsons.dev"
+        }
+    when:
+      status:
+        - success
+
+  - name: notify-failure
+    image: plugins/webhook
+    settings:
+      urls:
+        from_secret: webhook_url
+      content_type: application/json
+      template: |
+        {
+          "content": "❌ Immich Photos deployment failed - check Drone logs"
+        }
+    when:
+      status:
+        - failure
+
+depends_on:
+  - immich-photos-deploy
+
