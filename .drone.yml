@@ -18,6 +18,18 @@ steps:
     commands:
       - apk add --no-cache docker-compose
       - mkdir -p "$UPLOAD_LOCATION" "$DB_DATA_LOCATION"
+      - |
+        cat > .env << EOF
+        UPLOAD_LOCATION=$UPLOAD_LOCATION
+        DB_DATA_LOCATION=$DB_DATA_LOCATION
+        DB_PASSWORD=$DB_PASSWORD
+        DB_USERNAME=$DB_USERNAME
+        DB_DATABASE_NAME=$DB_DATABASE_NAME
+        TZ=$TZ
+        MACHINE_LEARNING_WORKERS=$MACHINE_LEARNING_WORKERS
+        MACHINE_LEARNING_WORKER_TIMEOUT=$MACHINE_LEARNING_WORKER_TIMEOUT
+        IMMICH_VERSION=$IMMICH_VERSION
+        EOF
       - docker-compose down || true
       - docker-compose pull
       - docker-compose up -d
