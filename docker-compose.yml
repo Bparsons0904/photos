@@ -12,11 +12,11 @@ services:
       - database
     restart: unless-stopped
     networks:
-      - proxy
+      - traefik
       - immich
     labels:
       - traefik.enable=true
-      - traefik.docker.network=proxy
+      - traefik.docker.network=traefik
       - traefik.http.routers.immich.rule=Host(`photos.waugze.com`)
       - traefik.http.routers.immich.entrypoints=https
       - traefik.http.routers.immich.tls=true
@@ -62,7 +62,7 @@ volumes:
   model-cache:
 
 networks:
-  proxy:
+  traefik:
     external: true
   immich:
     driver: bridge
