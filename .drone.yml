@@ -17,6 +17,7 @@ steps:
     image: docker:24-cli
     commands:
       - apk add --no-cache docker-compose
+      - mkdir -p "$UPLOAD_LOCATION" "$DB_DATA_LOCATION"
       - docker-compose down || true
       - docker-compose pull
       - docker-compose up -d
