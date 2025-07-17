@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This repository contains a Docker Compose setup for Immich, a self-hosted photo and video management solution. The deployment is configured to run behind a Traefik reverse proxy with SSL termination and serves photos at `photos.bobparsons.dev`.
+This repository contains a Docker Compose setup for Immich, a self-hosted photo and video management solution. The deployment is configured to run behind a Traefik reverse proxy with SSL termination and serves photos at `photos.waugze.com`.
 
 ## Architecture
 

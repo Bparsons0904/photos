@@ -24,7 +24,7 @@ services:
       - traefik.http.services.immich.loadbalancer.server.port=2283
       # Fix for large uploads (important!)
       - traefik.http.routers.immich.middlewares=immich-timeout
-      - traefik.http.middlewares.immich-timeout.timeout.request=0s
+      - traefik.http.middlewares.immich-timeout.timeout.response=0s
 
   immich-machine-learning:
     container_name: immich_machine_learning
