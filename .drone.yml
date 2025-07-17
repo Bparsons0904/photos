@@ -24,23 +24,23 @@ steps:
     environment:
       # Environment variables from Drone secrets
       UPLOAD_LOCATION:
-        from_secret: immich_upload_location
+        from_secret: UPLOAD_LOCATION
       DB_DATA_LOCATION:
-        from_secret: immich_db_data_location
+        from_secret: DB_DATA_LOCATION
       DB_PASSWORD:
-        from_secret: immich_db_password
+        from_secret: DB_PASSWORD
       DB_USERNAME:
-        from_secret: immich_db_username
+        from_secret: DB_USERNAME
       DB_DATABASE_NAME:
-        from_secret: immich_db_database_name
+        from_secret: DB_DATABASE_NAME
       TZ:
-        from_secret: immich_tz
+        from_secret: TZ
       MACHINE_LEARNING_WORKERS:
-        from_secret: immich_ml_workers
+        from_secret: MACHINE_LEARNING_WORKERS
       MACHINE_LEARNING_WORKER_TIMEOUT:
-        from_secret: immich_ml_worker_timeout
+        from_secret: MACHINE_LEARNING_WORKER_TIMEOUT
       IMMICH_VERSION:
-        from_secret: immich_version
+        from_secret: IMMICH_VERSION
     depends_on:
       - create-network
     when:
