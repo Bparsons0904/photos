@@ -17,10 +17,18 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik
+      # HTTP router for redirect
+      - traefik.http.routers.immich-web.rule=Host(`photos.waugze.com`)
+      - traefik.http.routers.immich-web.entrypoints=web
+      - traefik.http.routers.immich-web.middlewares=immich-redirect
+      # HTTPS router
       - traefik.http.routers.immich.rule=Host(`photos.waugze.com`)
-      - traefik.http.routers.immich.entrypoints=https
+      - traefik.http.routers.immich.entrypoints=websecure
       - traefik.http.routers.immich.tls=true
       - traefik.http.routers.immich.tls.certresolver=letsencrypt
+      # Redirect middleware
+      - traefik.http.middlewares.immich-redirect.redirectscheme.scheme=https
+      - traefik.http.middlewares.immich-redirect.redirectscheme.permanent=true
       - traefik.http.services.immich.loadbalancer.server.port=2283
       # Fix for large uploads (important!)
       # - traefik.http.routers.immich.middlewares=immich-timeout

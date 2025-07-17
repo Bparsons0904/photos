@@ -96,10 +96,10 @@ docker-compose exec database psql -U postgres -d immich
 ## Important Notes
 
 ### Traefik Configuration
-- Configured for `photos.bobparsons.dev` domain
+- Configured for `photos.waugze.com` domain
 - Uses Let's Encrypt for SSL certificates
 - Includes timeout middleware for large file uploads
-- Requires external `proxy` network to be created
+- Requires external `traefik` network to be created
 
 ### Storage Considerations
 - Database should be stored on SSD for optimal performance
