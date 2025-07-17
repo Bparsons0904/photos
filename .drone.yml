@@ -6,6 +6,7 @@ steps:
   - name: create-network
     image: docker:24-cli
     commands:
+      - docker network create proxy || true
       - docker network create immich || true
     when:
       branch:
