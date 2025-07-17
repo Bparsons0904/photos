@@ -62,40 +62,5 @@ steps:
       event:
         - push
 
----
-kind: pipeline
-type: docker
-name: notify
 
-steps:
-  - name: notify-success
-    image: plugins/webhook
-    settings:
-      urls:
-        from_secret: webhook_url
-      content_type: application/json
-      template: |
-        {
-          "content": "✅ Immich Photos deployed successfully to https://photos.bobparsons.dev"
-        }
-    when:
-      status:
-        - success
-
-  - name: notify-failure
-    image: plugins/webhook
-    settings:
-      urls:
-        from_secret: webhook_url
-      content_type: application/json
-      template: |
-        {
-          "content": "❌ Immich Photos deployment failed - check Drone logs"
-        }
-    when:
-      status:
-        - failure
-
-depends_on:
-  - immich-photos-deploy
 
